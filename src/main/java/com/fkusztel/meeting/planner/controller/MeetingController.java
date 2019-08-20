@@ -19,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * @author Filip.Kusztelak
- */
+/** @author Filip.Kusztelak */
 @Slf4j
 @Controller
 @RequestMapping(path = "meeting")
 public class MeetingController {
 
-  @Autowired
-  MeetingService meetingService;
+  @Autowired MeetingService meetingService;
 
   /**
    * Create a new Meeting with the specified values.
@@ -39,8 +36,7 @@ public class MeetingController {
    * @param timeZone Preferred timezone (Europe/Paris, America/Sao_Paulo, Asia/Tokyo etc).
    */
   @PostMapping(path = "/create")
-  public @ResponseBody
-  Meeting createMeeting(
+  public @ResponseBody Meeting createMeeting(
       @RequestParam MeetingType meetingType,
       @RequestParam PriorityType priorityType,
       @RequestParam String date,
@@ -62,7 +58,7 @@ public class MeetingController {
     return meetingService.findMeetingById(meetingId);
   }
 
-  /** Find all meetings in database*/
+  /** Find all meetings in database */
   @GetMapping(path = "/all")
   public @ResponseBody Iterable<Meeting> getAllMeetings() {
     return meetingService.findAll();
@@ -81,12 +77,13 @@ public class MeetingController {
       @RequestParam Long meetingId,
       @RequestParam MeetingType meetingType,
       @RequestParam PriorityType priorityType,
-      @RequestParam String date) {
+      @RequestParam String date,
+      @RequestParam ZoneId timeZone) {
 
     log.info("updateMeeting: {}", meetingId);
 
     // Find meeting by Id and update details
-    return meetingService.updateMeeting(meetingId, meetingType, priorityType, date);
+    return meetingService.updateMeeting(meetingId, meetingType, priorityType, date, timeZone);
   }
 
   /**
@@ -117,33 +114,28 @@ public class MeetingController {
 
     log.info("findMeetingByDateBetween: {}{}", startDate, endDate);
 
-    return meetingService.findMeetingByDateBetween(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
+    return meetingService.findMeetingByDateBetween(
+        LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
   }
 
-  /**
-   * Lists all meeting types available.
-   */
+  /** Lists all meeting types available. */
   @GetMapping(path = "/types")
   public @ResponseBody Iterable<MeetingType> getMeetingTypes() {
 
     return meetingService.getType();
   }
 
-  /**
-   * Lists all meeting priorities available.
-   */
+  /** Lists all meeting priorities available. */
   @GetMapping(path = "/priorities")
   public @ResponseBody Iterable<PriorityType> getPriorityTypes() {
 
     return meetingService.getPriority();
   }
 
-  /**
-   * Lists all meetings sorted by given attribute.
-   */
+  /** Lists all meetings sorted by given attribute. */
   @GetMapping(path = "/sort-by")
-  public @ResponseBody Iterable<Meeting> sortBy(@RequestParam String attribute,
-      @RequestParam Direction direction) {
+  public @ResponseBody Iterable<Meeting> sortBy(
+      @RequestParam String attribute, @RequestParam Direction direction) {
 
     return meetingService.getSorted(attribute, direction);
   }

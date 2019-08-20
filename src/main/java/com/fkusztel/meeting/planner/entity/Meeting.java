@@ -17,9 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * @author Filip.Kusztelak
- */
+/** @author Filip.Kusztelak */
 @Entity(name = "Meeting")
 @Table(name = "meeting")
 @Builder
