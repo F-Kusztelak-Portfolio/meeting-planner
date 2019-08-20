@@ -27,7 +27,6 @@ repositories {
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.springframework.boot:spring-boot-starter-web')
 
 	compile('com.google.guava:guava:27.0-jre')
@@ -36,5 +35,4 @@ dependencies {
 
 	testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	testImplementation('org.springframework.security:spring-security-test')
 }

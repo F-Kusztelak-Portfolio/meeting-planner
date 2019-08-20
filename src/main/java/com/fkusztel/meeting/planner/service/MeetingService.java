@@ -5,7 +5,9 @@ import com.fkusztel.meeting.planner.entity.MeetingType;
 import com.fkusztel.meeting.planner.entity.PriorityType;
 import com.fkusztel.meeting.planner.exception.MeetingNotFoundException;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import org.springframework.data.domain.Sort.Direction;
 
 /**
  * @author Filip.Kusztelak
@@ -21,9 +23,15 @@ public interface MeetingService {
   void deleteMeeting(Long meetingId) throws MeetingNotFoundException;
 
   Meeting meetingCreate(
-          MeetingType meetingType, PriorityType priorityType, String date);
+          MeetingType meetingType, PriorityType priorityType, String date, ZoneId timeZone);
 
-  Iterable<Meeting> findMeetingByDateBetween(LocalDate startDate, LocalDate endDate);
+  Iterable<Meeting> findMeetingByDateBetween(LocalDateTime startDate, LocalDateTime  endDate);
 
   String updateMeeting(Long meetingId, MeetingType meetingType, PriorityType priorityType, String date);
+
+  Iterable<MeetingType> getType();
+
+  Iterable<PriorityType> getPriority();
+
+  Iterable<Meeting> getSorted(String attribute, Direction direction);
 }
