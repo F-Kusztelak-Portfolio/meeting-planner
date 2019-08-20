@@ -20,15 +20,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Filip.Kusztelak
- */
+/** @author Filip.Kusztelak */
 @Slf4j
 @Service
 public class MeetingServiceImpl implements MeetingService {
 
-  @Autowired
-  MeetingRepository meetingRepository;
+  @Autowired MeetingRepository meetingRepository;
 
   /**
    * Save meeting in database
@@ -107,14 +104,20 @@ public class MeetingServiceImpl implements MeetingService {
    * @param date Starting date of meeting (2018-02-03T12:30:30).
    */
   @Override
-  public String updateMeeting(Long meetingId, MeetingType meetingType, PriorityType priorityType, String date) {
+  public String updateMeeting(
+      Long meetingId,
+      MeetingType meetingType,
+      PriorityType priorityType,
+      String date,
+      ZoneId timeZone) {
 
     Meeting updated;
     try {
       updated = findMeetingById(meetingId);
       updated.setMeetingType(meetingType);
       updated.setPriorityType(priorityType);
-      updated.setMeetingDate(ZonedDateTime.parse(date));
+      updated.setMeetingDate(
+          ZonedDateTime.ofLocal(LocalDateTime.parse(date), timeZone, ZoneOffset.UTC));
 
       saveMeeting(updated);
       return updated.toString() + " updated successfully";
@@ -123,7 +126,8 @@ public class MeetingServiceImpl implements MeetingService {
           Meeting.builder()
               .meetingType(meetingType)
               .priorityType(priorityType)
-              .meetingDate(ZonedDateTime.parse(date))
+              .meetingDate(
+                  ZonedDateTime.ofLocal(LocalDateTime.parse(date), timeZone, ZoneOffset.UTC))
               .build();
 
       saveMeeting(created);
@@ -134,17 +138,13 @@ public class MeetingServiceImpl implements MeetingService {
     }
   }
 
-  /**
-   * Get all types available
-   */
+  /** Get all types available */
   @Override
   public Iterable<MeetingType> getType() {
     return Arrays.asList(MeetingType.values());
   }
 
-  /**
-   * Get all priorities available
-   */
+  /** Get all priorities available */
   @Override
   public Iterable<PriorityType> getPriority() {
     return Arrays.asList(PriorityType.values());
@@ -171,7 +171,8 @@ public class MeetingServiceImpl implements MeetingService {
    * @param endDate Date from which the search should be greater (2019-02-02T12:30:30).
    */
   @Override
-  public Iterable<Meeting> findMeetingByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+  public Iterable<Meeting> findMeetingByDateBetween(
+      LocalDateTime startDate, LocalDateTime endDate) {
     List<Meeting> meetingList = Lists.newArrayList(findAll());
     List<Meeting> datesBetween = Lists.newArrayList();
 
