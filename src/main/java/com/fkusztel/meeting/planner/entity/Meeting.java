@@ -1,7 +1,7 @@
 package com.fkusztel.meeting.planner.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,5 +44,5 @@ public class Meeting implements Serializable {
   private PriorityType priorityType;
 
   @Column(name = "meeting_date", unique = true)
-  private LocalDate meetingDate;
+  private ZonedDateTime meetingDate;
 }
