@@ -73,7 +73,7 @@ public class MeetingController {
    * @param date Starting date of meeting (2018-05-07).
    */
   @PutMapping(path = "/update")
-  public @ResponseBody String updateMeeting(
+  public @ResponseBody Meeting updateMeeting(
       @RequestParam Long meetingId,
       @RequestParam MeetingType meetingType,
       @RequestParam PriorityType priorityType,
