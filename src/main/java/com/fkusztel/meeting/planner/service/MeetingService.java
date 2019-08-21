@@ -24,7 +24,7 @@ public interface MeetingService {
 
   Iterable<Meeting> findMeetingByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-  String updateMeeting(
+  Meeting updateMeeting(
       Long meetingId,
       MeetingType meetingType,
       PriorityType priorityType,

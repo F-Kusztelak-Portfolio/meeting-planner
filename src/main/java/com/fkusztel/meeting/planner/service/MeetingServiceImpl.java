@@ -104,7 +104,7 @@ public class MeetingServiceImpl implements MeetingService {
    * @param date Starting date of meeting (2018-02-03T12:30:30).
    */
   @Override
-  public String updateMeeting(
+  public Meeting updateMeeting(
       Long meetingId,
       MeetingType meetingType,
       PriorityType priorityType,
@@ -116,14 +116,17 @@ public class MeetingServiceImpl implements MeetingService {
       updated = findMeetingById(meetingId);
       updated.setMeetingType(meetingType);
       updated.setPriorityType(priorityType);
+      updated.setId(meetingId);
       updated.setMeetingDate(
           ZonedDateTime.ofLocal(LocalDateTime.parse(date), timeZone, ZoneOffset.UTC));
 
       saveMeeting(updated);
-      return updated.toString() + " updated successfully";
+      log.info(updated.toString() + " updated successfully");
+      return updated;
     } catch (MeetingNotFoundException e) {
       Meeting created =
           Meeting.builder()
+              .id(meetingId)
               .meetingType(meetingType)
               .priorityType(priorityType)
               .meetingDate(
@@ -131,10 +134,11 @@ public class MeetingServiceImpl implements MeetingService {
               .build();
 
       saveMeeting(created);
-      return "Meeting with Id "
+      log.info("Meeting with Id "
           + meetingId
           + " was absent and it was created: "
-          + created.toString();
+          + created.toString());
+      return created;
     }
   }
 
